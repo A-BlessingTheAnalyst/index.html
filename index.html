@@ -2,725 +2,763 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Excel Skills Assessment | AI Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Academy Certification Exam</title>
 <style>
   :root{
-    --bg:#eaf5fc;
-    --bg2:#dcedf9;
-    --ink:#122436;
-    --ink-dim:#5c7488;
-    --blue:#2f96e0;
-    --blue-dim:#a9d4f0;
-    --blue-deep:#1c6fb0;
-    --green:#2fae7c;
-    --green-dim:#dcf3e8;
-    --danger:#e15b4e;
-    --danger-dim:#fbe2df;
-    --card:#ffffff;
-    --card-border:#cfe4f5;
-    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --navy:#0F2A4A;
+    --blue:#2563EB;
+    --blue-dark:#1D4ED8;
+    --green:#16A34A;
+    --red:#DC2626;
+    --amber:#D97706;
+    --bg:#F5F7FA;
+    --card:#FFFFFF;
+    --text:#1E293B;
+    --muted:#64748B;
+    --border:#E2E8F0;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:
-      repeating-linear-gradient(0deg, rgba(47,150,224,0.05) 0px, rgba(47,150,224,0.05) 1px, transparent 1px, transparent 32px),
-      repeating-linear-gradient(90deg, rgba(47,150,224,0.05) 0px, rgba(47,150,224,0.05) 1px, transparent 1px, transparent 32px),
-      linear-gradient(160deg, var(--bg2), var(--bg) 70%);
-    color:var(--ink);
-    font-family:var(--sans);
-    min-height:100vh;
-    -webkit-user-select:none; user-select:none;
-    -webkit-touch-callout:none;
-  }
-  ::selection{ background:transparent; }
-  .wrap{ max-width:720px; margin:0 auto; padding:28px 18px 60px; }
-  .eyebrow{
-    font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--blue-deep); opacity:.85; margin-bottom:6px;
-  }
-  h1{ font-size:26px; margin:0 0 4px; font-weight:700; letter-spacing:-0.01em; color:var(--ink); }
-  .sub{ color:var(--ink-dim); font-size:14px; margin:0 0 24px; line-height:1.5; }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);}
+  body.exam-active{user-select:none;-webkit-user-select:none;-ms-user-select:none;}
+  img,svg{max-width:100%;}
+  button{font-family:inherit;cursor:pointer;}
+  .hidden{display:none !important;}
+  .screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 16px;}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:10px;max-width:760px;width:100%;padding:32px;}
+  h1{font-size:22px;margin:0 0 4px 0;color:var(--navy);}
+  h2{font-size:17px;margin:24px 0 10px 0;color:var(--navy);}
+  p{line-height:1.6;font-size:15px;}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  ol.rules{padding-left:20px;}
+  ol.rules li{margin-bottom:10px;line-height:1.6;font-size:14.5px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--navy);}
+  .field input[type=text],.field input[type=email]{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;}
+  .checkbox-row{display:flex;align-items:flex-start;gap:10px;margin:20px 0;padding:14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);}
+  .checkbox-row input{margin-top:3px;}
+  .checkbox-row label{font-size:14px;line-height:1.5;}
+  .btn{display:inline-block;padding:12px 22px;border-radius:7px;border:none;font-size:15px;font-weight:600;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:disabled{background:#94A3B8;cursor:not-allowed;}
+  .btn-primary:not(:disabled):hover{background:var(--blue-dark);}
+  .btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--border);}
+  .btn-danger{background:var(--red);color:#fff;}
+  .notice{padding:12px 14px;border-radius:7px;font-size:13.5px;margin-bottom:16px;}
+  .notice-amber{background:#FEF3E2;color:#92400E;border:1px solid #FDE1B0;}
+  .notice-red{background:#FEECEC;color:#991B1B;border:1px solid #FBCFCF;}
+  .notice-green{background:#EAF7EE;color:#166534;border:1px solid #C9EBD4;}
 
-  .card{
-    background:var(--card); border:1px solid var(--card-border); border-radius:14px;
-    padding:24px; margin-bottom:16px; box-shadow:0 2px 14px rgba(47,150,224,0.08);
-  }
-  ul.rules{ margin:0; padding-left:0; list-style:none; }
-  ul.rules li{ display:flex; gap:10px; padding:9px 0; border-bottom:1px solid var(--bg2); font-size:14px; color:var(--ink-dim); line-height:1.5; }
-  ul.rules li:last-child{ border-bottom:none; }
-  ul.rules li .tag{ font-family:var(--mono); color:var(--blue-deep); flex-shrink:0; font-size:12px; padding-top:1px; }
+  header.exam-header{position:sticky;top:0;background:var(--navy);color:#fff;width:100%;z-index:20;}
+  .exam-header-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;gap:12px;flex-wrap:wrap;}
+  .exam-title-small{font-size:14px;font-weight:600;}
+  .candidate-name{font-size:12px;color:#B9C7DA;}
+  .timer{font-family:var(--mono);font-size:20px;font-weight:700;padding:6px 14px;border-radius:6px;background:rgba(255,255,255,0.12);}
+  .timer.low{background:var(--red);}
+  .violation-badge{font-size:12px;background:rgba(220,38,38,0.85);padding:4px 10px;border-radius:999px;font-weight:600;}
 
-  label.field-label{ display:block; font-size:12.5px; color:var(--ink-dim); margin:0 0 6px; font-weight:600; }
-  input.text-input{
-    width:100%; padding:11px 13px; border-radius:8px; border:1px solid var(--card-border);
-    background:var(--bg); color:var(--ink); font-size:14px; margin-bottom:14px; font-family:var(--sans);
-    -webkit-user-select:text; user-select:text;
-  }
-  input.text-input:focus{ outline:2px solid var(--blue); border-color:var(--blue); }
+  main.exam-main{max-width:920px;width:100%;margin:0 auto;padding:20px 16px 100px 16px;}
+  .progress-line{font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .topic-tag{display:inline-block;font-size:11px;font-weight:700;text-transform:none;letter-spacing:0.2px;background:#E6EEFB;color:var(--blue-dark);padding:4px 10px;border-radius:999px;margin-bottom:14px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:26px;}
+  .qtext{font-size:16.5px;line-height:1.6;margin:0 0 18px 0;color:var(--text);}
+  .chart-wrap{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:18px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{border:1.5px solid var(--border);border-radius:8px;padding:13px 15px;display:flex;align-items:flex-start;gap:12px;font-size:15px;line-height:1.5;}
+  .option:hover{border-color:var(--blue);}
+  .option.selected{border-color:var(--blue);background:#EFF4FE;}
+  .option input{margin-top:3px;}
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;flex-wrap:wrap;}
+  .nav-row .left-btns, .nav-row .right-btns{display:flex;gap:10px;}
+  .palette{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:24px;}
+  .pdot{aspect-ratio:1;border-radius:5px;border:1px solid var(--border);background:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+  .pdot.answered{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .pdot.current{outline:2px solid var(--navy);outline-offset:1px;}
+  footer.submit-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 16px;display:flex;justify-content:center;}
+  .submit-bar-inner{max-width:920px;width:100%;display:flex;justify-content:flex-end;}
 
-  button{ font-family:var(--sans); cursor:pointer; border:none; }
-  .btn-primary{
-    background:var(--blue); color:#ffffff; font-weight:700; font-size:15px;
-    padding:14px 22px; border-radius:10px; width:100%;
-    transition:transform .08s ease, filter .15s ease;
-  }
-  .btn-primary:hover{ filter:brightness(1.06); }
-  .btn-primary:active{ transform:scale(0.98); }
-  .btn-primary:disabled{ background:var(--blue-dim); cursor:not-allowed; }
-  .btn-ghost{
-    background:transparent; color:var(--blue-deep); border:1px solid var(--card-border);
-    font-size:13px; padding:10px 16px; border-radius:8px;
-  }
-
-  .quiz-header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
-  .cellref{
-    font-family:var(--mono); font-size:34px; font-weight:700; color:var(--blue-deep); line-height:1;
-  }
-  .topic-pill{
-    font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--ink-dim); margin-top:4px;
-  }
-  .timer{
-    font-family:var(--mono); font-size:26px; font-weight:700; text-align:right; color:var(--ink);
-  }
-  .timer.warn{ color:var(--danger); }
-  .timer-label{ font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim); text-align:right; }
-
-  .progress-track{ height:6px; border-radius:4px; background:var(--bg2); overflow:hidden; margin-bottom:22px; }
-  .progress-fill{ height:100%; background:linear-gradient(90deg, var(--blue), var(--green)); border-radius:4px; transition:width .3s ease; }
-
-  .question-text{ font-size:18px; line-height:1.5; margin:0 0 20px; font-weight:600; color:var(--ink); }
-
-  .option{
-    display:flex; gap:12px; align-items:flex-start; width:100%; text-align:left;
-    background:var(--bg); border:1px solid var(--card-border); border-radius:10px;
-    padding:14px 16px; margin-bottom:10px; color:var(--ink); font-size:14.5px; line-height:1.4;
-    transition:border-color .12s ease, background .12s ease;
-  }
-  .option:hover:not(:disabled){ border-color:var(--blue); background:#f2f9fe; }
-  .option .letter{ font-family:var(--mono); color:var(--blue-deep); flex-shrink:0; font-weight:700; }
-  .option.correct{ background:var(--green-dim); border-color:var(--green); }
-  .option.correct .letter{ color:var(--green); }
-  .option.wrong{ background:var(--danger-dim); border-color:var(--danger); }
-  .option.wrong .letter{ color:var(--danger); }
-  .option:disabled{ cursor:default; }
-
-  .feedback{ margin-top:6px; padding:14px 16px; border-radius:10px; font-size:13.5px; line-height:1.5; display:none; }
-  .feedback.show{ display:block; }
-  .feedback.right{ background:var(--green-dim); color:#0f5c3d; }
-  .feedback.wrong{ background:var(--danger-dim); color:#7d2a20; }
-  .feedback b{ font-family:var(--mono); }
-
-  .next-row{ display:flex; justify-content:flex-end; margin-top:18px; }
-  .btn-next{
-    background:var(--blue); color:#ffffff; font-weight:700; font-size:14px;
-    padding:11px 20px; border-radius:8px; display:none;
-  }
-  .btn-next.show{ display:inline-block; }
-
-  #banner{
-    position:fixed; top:0; left:0; right:0; z-index:50;
-    background:var(--danger); color:#ffffff; font-family:var(--mono); font-size:13px;
-    text-align:center; padding:10px 14px; font-weight:700; letter-spacing:.02em;
-    transform:translateY(-100%); transition:transform .25s ease;
-  }
-  #banner.show{ transform:translateY(0); }
-
-  #toast{
-    position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:var(--ink); color:#ffffff; font-size:13px; padding:10px 18px; border-radius:8px;
-    opacity:0; transition:opacity .2s ease, transform .2s ease; z-index:50; pointer-events:none;
-  }
-  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-
-  .score-hero{ text-align:center; padding:10px 0 24px; }
-  .score-big{ font-family:var(--mono); font-size:56px; font-weight:700; color:var(--blue-deep); line-height:1; }
-  .score-sub{ color:var(--ink-dim); font-size:14px; margin-top:8px; }
-
-  .topic-row{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--bg2); }
-  .topic-row:last-child{ border-bottom:none; }
-  .topic-row .name{ font-size:13px; width:170px; flex-shrink:0; color:var(--ink-dim); }
-  .topic-row .bar-track{ flex:1; height:8px; border-radius:4px; background:var(--bg2); overflow:hidden; }
-  .topic-row .bar-fill{ height:100%; background:var(--blue); }
-  .topic-row .score{ font-family:var(--mono); font-size:12.5px; width:44px; text-align:right; flex-shrink:0; color:var(--ink); }
-
-  details.review-item{ border-bottom:1px solid var(--bg2); padding:12px 0; }
-  details.review-item:last-child{ border-bottom:none; }
-  details.review-item summary{ cursor:pointer; font-size:13.5px; display:flex; gap:10px; align-items:center; list-style:none; color:var(--ink); }
-  details.review-item summary::-webkit-details-marker{ display:none; }
-  details.review-item summary .ref{ font-family:var(--mono); color:var(--blue-deep); font-size:11.5px; flex-shrink:0; }
-  details.review-item summary .status{ margin-left:auto; font-family:var(--mono); font-size:11px; flex-shrink:0; }
-  details.review-item summary .status.right{ color:var(--green); }
-  details.review-item summary .status.wrong{ color:var(--danger); }
-  details.review-item .detail-body{ padding:10px 4px 4px 30px; font-size:13px; color:var(--ink-dim); line-height:1.5; -webkit-user-select:text; user-select:text; }
-  details.review-item .detail-body div{ margin-bottom:4px; }
-  details.review-item .detail-body b{ color:var(--ink); }
-
-  .screenshot-box{
-    border:2px dashed var(--blue); border-radius:12px; padding:16px 18px; background:#f2f9fe;
-    font-size:13.5px; color:var(--ink); line-height:1.6; margin-bottom:16px;
-  }
-  .screenshot-box b{ color:var(--blue-deep); }
-
-  .hidden{ display:none !important; }
-  .fine-print{ font-size:11.5px; color:var(--ink-dim); opacity:.8; line-height:1.5; margin-top:18px; }
+  .toast{position:fixed;top:74px;right:16px;background:var(--red);color:#fff;padding:12px 16px;border-radius:8px;font-size:13.5px;max-width:320px;z-index:50;box-shadow:0 4px 14px rgba(0,0,0,0.2);}
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,42,74,0.55);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px;}
+  .modal{background:#fff;border-radius:10px;max-width:420px;width:100%;padding:26px;text-align:center;}
+  .modal h3{margin-top:0;color:var(--navy);}
+  .result-score{font-size:44px;font-weight:800;color:var(--navy);margin:10px 0;}
+  .result-list{list-style:none;padding:0;margin:0;text-align:left;}
+  .result-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;}
 </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-<div id="banner"></div>
-<div id="toast"></div>
+<!-- ============ SCREEN 1: INSTRUCTIONS AND REGISTRATION ============ -->
+<div id="instructionsScreen" class="screen">
+  <div class="panel">
+    <h1>Aidlearn Analytics Data Skills Certification Exam</h1>
+    <p class="sub">Excel, Power BI, and SQL. 50 questions. 48 minutes. Read every rule below before you register.</p>
 
-<div class="wrap">
-
-  <!-- ALREADY TAKEN SCREEN -->
-  <div id="lockedScreen" class="hidden">
-    <div class="eyebrow">AI Academy · Timed Assessment</div>
-    <h1>Excel Skills Assessment</h1>
-    <div class="card">
-      <p class="sub" style="margin-bottom:0;">This quiz allows one attempt per device, and it looks like you have already completed it.</p>
-      <p class="sub" id="lockedScoreLine"></p>
-      <p class="sub" style="margin-bottom:0;">If you believe this is a mistake, contact your instructor directly rather than clearing your browser data.</p>
+    <div class="notice notice-amber">
+      This exam is monitored. Screen sharing, tab focus, fullscreen status, and copy or paste attempts are all logged. Please close every other tab, application, and notification before you begin.
     </div>
+
+    <h2>Exam rules and regulations</h2>
+    <ol class="rules">
+      <li>You have <strong>48 minutes</strong> to answer all 50 questions. A countdown timer is visible at the top of the screen at all times. The exam submits automatically the moment the timer reaches zero.</li>
+      <li>You get <strong>one attempt</strong>. Once you click Start Exam, the clock begins and cannot be paused.</li>
+      <li>Before the exam begins, your browser will ask for permission to share your screen. You must share your <strong>entire screen</strong> for the full duration of the exam. Stopping screen sharing at any point is recorded as a violation.</li>
+      <li>The exam runs in fullscreen. Exiting fullscreen, switching tabs, switching applications, or letting the window lose focus is recorded as a violation.</li>
+      <li>Copying, cutting, and pasting are disabled for the duration of the exam. Right click and a number of keyboard shortcuts are also disabled.</li>
+      <li>Repeated violations will end your exam early and flag your submission for instructor review.</li>
+      <li>Use the <strong>Previous</strong> and <strong>Next</strong> buttons to move between questions. You may revisit and change any answer before you submit. A question grid at the bottom of the exam shows your progress.</li>
+      <li>Each question has exactly one correct option. Answer options and question order are shuffled individually for every candidate, so do not expect the same question order or option order as anyone sitting near you.</li>
+      <li>No external help, second devices, browser extensions, printed notes, or collaboration of any kind is permitted.</li>
+      <li>When you submit, your score and a full activity log are sent to your instructor automatically. You will also see your own score on screen once you submit.</li>
+      <li>By entering your details below and clicking Start Exam, you confirm that you have read, understood, and agree to comply with all of the rules above.</li>
+    </ol>
+
+    <h2>Your details</h2>
+    <div class="field">
+      <label for="studentName">Full name</label>
+      <input type="text" id="studentName" placeholder="e.g. Chidinma Okafor" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="studentEmail">Email address</label>
+      <input type="email" id="studentEmail" placeholder="e.g. chidinma@example.com" autocomplete="off">
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="agreeCheck">
+      <label for="agreeCheck">I have read and understood the rules above, and I agree to comply with them for the entire duration of this exam.</label>
+    </div>
+
+    <div id="regError" class="notice notice-red hidden"></div>
+
+    <button class="btn btn-primary" id="proceedBtn" disabled>Continue to screen sharing setup</button>
   </div>
+</div>
 
-  <!-- START SCREEN -->
-  <div id="startScreen">
-    <div class="eyebrow">AI Academy · Timed Assessment</div>
-    <h1>Excel Skills Assessment</h1>
-    <p class="sub">30 questions covering the Excel interface, text functions, logical functions, date functions, lookup functions, and using Copilot and Claude alongside Excel.</p>
-
-    <div class="card">
-      <ul class="rules">
-        <li><span class="tag">TIME</span> You have 25 minutes total. The quiz auto-submits when the clock hits zero.</li>
-        <li><span class="tag">ONCE</span> You get a single attempt on this device. There is no retake once you start.</li>
-        <li><span class="tag">FOCUS</span> Stay on this tab. Switching tabs or leaving fullscreen is logged, and doing it twice auto-submits the quiz.</li>
-        <li><span class="tag">COPY</span> Copy, cut, paste, and right-click are disabled while the quiz is running.</li>
-        <li><span class="tag">SCORING</span> You will see whether each answer is right or wrong immediately, plus a full breakdown at the end.</li>
-        <li><span class="tag">REPORT</span> Your result is sent to your instructor automatically, and you will also be asked to screenshot your score as backup.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <label class="field-label" for="studentName">Your full name (required)</label>
-      <input class="text-input" id="studentName" type="text" placeholder="e.g. Chidi Okafor">
-      <label class="field-label" for="studentEmail">Your email (optional)</label>
-      <input class="text-input" id="studentEmail" type="email" placeholder="e.g. chidi@example.com">
-      <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
-    </div>
-    <p class="fine-print">Best used in fullscreen on a laptop or desktop browser. This runs entirely in your browser, and only your name, email, and score leave this page when your result is submitted.</p>
+<!-- ============ SCREEN 2: SCREEN SHARE + FULLSCREEN SETUP ============ -->
+<div id="setupScreen" class="screen hidden">
+  <div class="panel">
+    <h1>Set up monitoring before you begin</h1>
+    <p>Two things need to happen before your exam starts:</p>
+    <ol class="rules">
+      <li>Your browser will show a screen sharing prompt. Choose <strong>Entire Screen</strong> and click Share.</li>
+      <li>Your exam will then open in fullscreen. Please stay in fullscreen until you submit.</li>
+    </ol>
+    <div id="setupError" class="notice notice-red hidden"></div>
+    <button class="btn btn-primary" id="startExamBtn">Start screen sharing and begin exam</button>
+    <p class="sub" style="margin-top:16px;">If you accidentally decline the screen sharing prompt, simply click the button again.</p>
   </div>
+</div>
 
-  <!-- QUIZ SCREEN -->
-  <div id="quizScreen" class="hidden">
-    <div class="quiz-header">
+<!-- ============ SCREEN 3: EXAM ============ -->
+<div id="examScreen" class="screen hidden" style="padding:0;align-items:stretch;">
+  <header class="exam-header">
+    <div class="exam-header-inner">
       <div>
-        <div class="cellref" id="cellRef">A1</div>
-        <div class="topic-pill" id="topicLabel">Excel Interface</div>
+        <div class="exam-title-small">Aidlearn Analytics Certification Exam</div>
+        <div class="candidate-name" id="headerCandidate"></div>
       </div>
-      <div>
-        <div class="timer-label">Time left</div>
-        <div class="timer" id="timerDisplay">25:00</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="violation-badge hidden" id="violationBadge">0 violations</span>
+        <div class="timer" id="timerDisplay">48:00</div>
       </div>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </header>
+  <main class="exam-main">
+    <div class="progress-line" id="progressLine">Question 1 of 50</div>
+    <span class="topic-tag" id="topicTag">Excel</span>
+    <div class="qcard">
+      <p class="qtext" id="qtext"></p>
+      <div class="chart-wrap hidden" id="chartWrap"></div>
+      <div class="options" id="optionsWrap"></div>
+      <div class="nav-row">
+        <div class="left-btns">
+          <button class="btn btn-ghost" id="prevBtn">Previous</button>
+          <button class="btn btn-ghost" id="nextBtn">Next</button>
+        </div>
+        <div class="right-btns">
+          <button class="btn btn-danger" id="submitBtn">Submit exam</button>
+        </div>
+      </div>
+    </div>
+    <div class="palette" id="palette"></div>
+  </main>
+  <footer class="submit-bar hidden" id="stickySubmitBar">
+    <div class="submit-bar-inner">
+      <button class="btn btn-danger" id="submitBtn2">Submit exam</button>
+    </div>
+  </footer>
+</div>
 
-    <div class="card">
-      <p class="question-text" id="questionText"></p>
-      <div id="optionsContainer"></div>
-      <div class="feedback" id="feedbackBox"></div>
-      <div class="next-row"><button class="btn-next" id="nextBtn" onclick="nextQuestion()">Next question &rarr;</button></div>
-    </div>
+<!-- ============ SCREEN 4: RESULT ============ -->
+<div id="resultScreen" class="screen hidden">
+  <div class="panel" style="text-align:center;">
+    <h1>Exam submitted</h1>
+    <p class="sub">Thank you. Your instructor has been notified automatically.</p>
+    <div class="result-score" id="resultScoreText">0 / 50</div>
+    <ul class="result-list">
+      <li><span>Candidate</span><span id="resSummaryName"></span></li>
+      <li><span>Percentage</span><span id="resSummaryPct"></span></li>
+      <li><span>Time used</span><span id="resSummaryTime"></span></li>
+      <li><span>Violations logged</span><span id="resSummaryViol"></span></li>
+      <li><span>Submission status</span><span id="resSummaryStatus"></span></li>
+    </ul>
+    <div id="submitStatusNotice" class="notice notice-green" style="margin-top:20px;">Result sent to your instructor.</div>
+    <button class="btn btn-ghost" id="downloadReceiptBtn" style="margin-top:10px;">Download my result receipt</button>
   </div>
+</div>
 
-  <!-- RESULTS SCREEN -->
-  <div id="resultsScreen" class="hidden">
-    <div class="eyebrow">Assessment Complete</div>
-    <h1>Your Results</h1>
-    <p class="sub" id="submitNote"></p>
-
-    <div class="card">
-      <div class="score-hero">
-        <div class="score-big" id="scoreBig">0/30</div>
-        <div class="score-sub" id="scoreSub"></div>
-      </div>
-    </div>
-
-    <div class="screenshot-box" id="screenshotBox">
-      <b>Before you close this tab:</b> take a screenshot of this results screen and send it to your instructor. Your score is also being submitted automatically, but the screenshot is your backup in case that does not go through.
-    </div>
-
-    <div class="card">
-      <div class="eyebrow" style="margin-bottom:14px;">By topic</div>
-      <div id="topicBreakdown"></div>
-    </div>
-
-    <div class="card">
-      <div class="eyebrow" style="margin-bottom:14px;">Answer review</div>
-      <div id="reviewList"></div>
-    </div>
-
-    <button class="btn-ghost" style="width:100%; margin-top:4px;" onclick="copySummary()">Copy result summary to clipboard</button>
-    <p class="fine-print" id="sendStatus"></p>
+<!-- ============ FULLSCREEN RE-ENTRY MODAL ============ -->
+<div id="fsModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>You left fullscreen</h3>
+    <p>This has been logged as a violation. Click below to return to fullscreen and continue your exam.</p>
+    <button class="btn btn-primary" id="resumeFsBtn">Resume exam</button>
   </div>
-
 </div>
 
 <script>
-  // =========================================================
-  // CONFIG: edit these two lines for your class
-  // =========================================================
-  const INSTRUCTOR_EMAIL = "ajibokunblessing@gmail.com";
-  const COURSE_LABEL = "AI Academy — Excel Fundamentals"; // shown in the email subject only
+(function(){
+"use strict";
 
-  // ---------- DATA ----------
-  const TOPICS = {
-    A: "Excel Interface (GUI)",
-    B: "Text Functions",
-    C: "Logical Functions",
-    D: "Date Functions",
-    E: "Lookup Functions",
-    F: "AI Tools (Copilot & Claude)"
+/* =========================================================
+   CONFIGURATION
+   Edit these values before you deploy this file.
+========================================================= */
+var CONFIG = {
+  examTitle: "Aidlearn Analytics Certification Exam",
+  durationMinutes: 48,
+  // Paste the Google Apps Script Web App URL here (see the accompanying
+  // apps-script-backend.gs file and deployment instructions).
+  webhookUrl: "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE",
+  // Fallback instructor email used only if the automatic webhook fails.
+  instructorEmail: "your-email@example.com",
+  maxViolationsBeforeAutoSubmit: 5,
+  showScoreToCandidate: true
+};
+
+/* =========================================================
+   QUESTION BANK (50 questions)
+   Each question: topic, text, optional chart (SVG string),
+   4 options with the correct answer always authored at index 0.
+   Options and question order are shuffled at runtime per candidate.
+========================================================= */
+var BAR_CHART = `<svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monthly sales bar chart">
+<line x1="30" y1="260" x2="530" y2="260" stroke="#94a3b8" stroke-width="1"/>
+<rect x="30" y="95" width="60" height="165" fill="#2563eb"/>
+<rect x="115" y="74" width="60" height="186" fill="#2563eb"/>
+<rect x="200" y="67" width="60" height="193" fill="#2563eb"/>
+<rect x="285" y="177" width="60" height="83" fill="#2563eb"/>
+<rect x="370" y="54" width="60" height="206" fill="#2563eb"/>
+<rect x="455" y="40" width="60" height="220" fill="#2563eb"/>
+<text x="60" y="276" font-size="13" text-anchor="middle" fill="#334155">Jan</text>
+<text x="145" y="276" font-size="13" text-anchor="middle" fill="#334155">Feb</text>
+<text x="230" y="276" font-size="13" text-anchor="middle" fill="#334155">Mar</text>
+<text x="315" y="276" font-size="13" text-anchor="middle" fill="#334155">Apr</text>
+<text x="400" y="276" font-size="13" text-anchor="middle" fill="#334155">May</text>
+<text x="485" y="276" font-size="13" text-anchor="middle" fill="#334155">Jun</text>
+<text x="10" y="30" font-size="13" fill="#334155">Units sold, relative scale</text>
+</svg>`;
+
+var LINE_CHART = `<svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monthly revenue line chart">
+<line x1="30" y1="260" x2="530" y2="260" stroke="#94a3b8" stroke-width="1"/>
+<polyline points="40,167 84,163 127,156 171,160 215,151 258,144 302,149 345,140 389,133 433,126 476,63 520,40" fill="none" stroke="#16a34a" stroke-width="3"/>
+<text x="40" y="276" font-size="13" text-anchor="middle" fill="#334155">Jan</text>
+<text x="171" y="276" font-size="13" text-anchor="middle" fill="#334155">Apr</text>
+<text x="302" y="276" font-size="13" text-anchor="middle" fill="#334155">Jul</text>
+<text x="433" y="276" font-size="13" text-anchor="middle" fill="#334155">Oct</text>
+<text x="520" y="276" font-size="13" text-anchor="middle" fill="#334155">Dec</text>
+<text x="10" y="30" font-size="13" fill="#334155">Revenue, relative scale</text>
+</svg>`;
+
+var QUESTIONS = [
+// ---------------- EXCEL (22) ----------------
+{topic:"Excel", text:`A trainee wants to lock the header row and the first column in place so they stay visible while scrolling through a large worksheet. Which View tab command achieves this in one action?`,
+ options:[`Freeze Panes, with the cursor placed just below the header row and to the right of the first column`,`Split`,`Page Break Preview`,`New Window`]},
+{topic:"Excel", text:`Which indicator appears in the top left corner of a cell when Excel detects a formula that is inconsistent with formulas in neighboring cells?`,
+ options:[`A small green triangle`,`A red circle`,`A blue underline`,`A yellow exclamation icon in the cell center`]},
+{topic:"Excel", text:`A trainee needs to compare Sheet1 and Sheet2 of the same workbook side by side, with both sheets scrolling together. Which combination of View tab features accomplishes this?`,
+ options:[`New Window, then View Side by Side with Synchronous Scrolling turned on`,`Freeze Panes applied on both sheets`,`Split the window on Sheet1 only`,`Page Layout view on both sheets`]},
+{topic:"Excel", text:`What does =LEFT("Aidlearn Analytics",4) return?`,
+ options:[`Aidl`,`Aidle`,`lear`,`#VALUE!`]},
+{topic:"Excel", text:`A cell contains "  Data   Guru  " with irregular spacing. What does =TRIM() do to this text?`,
+ options:[`Removes leading and trailing spaces and reduces multiple spaces between words to a single space`,`Removes all spaces, including those between words`,`Only removes leading spaces`,`Converts spaces to underscores`]},
+{topic:"Excel", text:`What does =MID("Power BI Desktop",7,2) return?`,
+ options:[`BI`,`er`,`I D`,`#VALUE!`]},
+{topic:"Excel", text:`A trainee needs to join values from a range of 12 cells into one string, separated by commas, while automatically skipping any empty cells, in one step. Which function is best suited for this?`,
+ options:[`TEXTJOIN`,`CONCATENATE`,`The & operator`,`PROPER`]},
+{topic:"Excel", text:`What does =EDATE(DATE(2025,1,31),1) return?`,
+ options:[`28-Feb-2025`,`31-Feb-2025`,`01-Mar-2025`,`#NUM!`]},
+{topic:"Excel", text:`Which function calculates the number of working days between two dates while excluding weekends, and optionally excluding a supplied list of holidays?`,
+ options:[`NETWORKDAYS`,`DATEDIF`,`WORKDAY`,`DAYS`]},
+{topic:"Excel", text:`A trainee calculates a customer's age using =YEAR(TODAY())-YEAR(B2), where B2 holds a date of birth. What is the main flaw in this approach?`,
+ options:[`It can overstate the age by one year if the birthday has not yet occurred this year`,`It always understates the age by one year`,`It only works for dates before the year 2000`,`YEAR cannot be used inside a subtraction formula`]},
+{topic:"Excel", text:`A trainee needs to test five sequential salary bands and return a different label for each, without nesting several IF statements inside one another. Which function is best suited for this?`,
+ options:[`IFS`,`SWITCH nested inside VLOOKUP`,`AND`,`CHOOSE`]},
+{topic:"Excel", text:`Given the formula =IF(AND(A2>50,B2="Yes"),"Pass","Fail"), under which condition will the result be "Pass"?`,
+ options:[`A2 is greater than 50 and B2 equals Yes, both at the same time`,`Either A2 is greater than 50 or B2 equals Yes`,`A2 is greater than 50, regardless of B2`,`B2 equals Yes, regardless of A2`]},
+{topic:"Excel", text:`What does =IFERROR(VLOOKUP(A2,Table1,3,FALSE),"Not Found") return when the VLOOKUP successfully finds a match?`,
+ options:[`The value that VLOOKUP retrieves, exactly as it normally would`,`The text Not Found`,`A blank cell`,`#N/A`]},
+{topic:"Excel", text:`Classic VLOOKUP cannot retrieve a value from a column positioned to the left of the lookup column. Which modern function overcomes this limitation without rearranging the source columns?`,
+ options:[`XLOOKUP`,`HLOOKUP`,`VLOOKUP with a negative column index`,`INDEX used alone, without MATCH`]},
+{topic:"Excel", text:`In VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]), what risk arises from leaving the range_lookup argument blank or set to TRUE?`,
+ options:[`It may return an incorrect approximate match if the lookup column is not sorted in ascending order`,`It will always return #N/A`,`It forces an exact match regardless of the data`,`It ignores the col_index_num argument`]},
+{topic:"Excel", text:`A trainee builds =INDEX(C2:C20,MATCH(1,(A2:A20="Lagos")*(B2:B20="Q4"),0)) and enters it as an array formula. What is this formula designed to do?`,
+ options:[`Look up a value in column C where the region equals Lagos and the period equals Q4 are both true at the same time`,`Look up a value where either the region is Lagos or the period is Q4`,`Count how many rows match Lagos in Q4`,`Sum all values in column C for Lagos`]},
+{topic:"Excel", text:`Which XLOOKUP argument lets a trainee directly specify a custom value to return, instead of #N/A, when no match is found?`,
+ options:[`if_not_found`,`match_mode`,`search_mode`,`return_array`]},
+{topic:"Excel", text:`To group monthly sales figures by quarter inside a Pivot Table, which field area should the date field be placed in before applying the Group feature?`,
+ options:[`Rows`,`Values`,`Filters`,`Column Labels only, never Rows`]},
+{topic:"Excel", text:`What does the Group feature applied to a date field in a Pivot Table allow a trainee to do?`,
+ options:[`Roll individual dates up into days, months, quarters, or years`,`Merge two separate pivot tables into one`,`Hide all blank rows automatically`,`Convert text values into dates`]},
+{topic:"Excel", text:`A trainee wants a new field inside a Pivot Table that computes Profit Margin using fields already in the pivot, without adding a helper column to the source data. Which Pivot Table feature allows this?`,
+ options:[`Calculated Field`,`Slicer`,`Value Field Settings, Show Values As`,`Pivot Chart`]},
+{topic:"Excel", chart:BAR_CHART, text:`The chart shows monthly sales from January to June. Based only on what is shown, which month most clearly signals an anomaly that a data analyst should investigate first?`,
+ options:[`April`,`January`,`June`,`The chart shows no anomaly`]},
+{topic:"Excel", text:`A trainee is deciding between a pie chart and a stacked bar chart to compare how sales are split across six regions, month by month, over a full year. Which is the stronger storytelling choice, and why?`,
+ options:[`A stacked bar chart, because it can show both the composition and how it changes over time, while a pie chart only shows a single snapshot`,`A pie chart, because it always uses less ink and is easier to read`,`Either works equally well, since both show parts of a whole`,`Neither; a single number should replace both`]},
+
+// ---------------- POWER BI (14) ----------------
+{topic:"Power BI", text:`Which Power Query step type combines two queries by matching rows on a common key, similar in concept to a SQL join?`,
+ options:[`Merge Queries`,`Append Queries`,`Group By`,`Unpivot Columns`]},
+{topic:"Power BI", text:`What is the key difference between Append Queries and Merge Queries in Power Query?`,
+ options:[`Append stacks rows from tables with matching columns, while Merge joins columns from tables based on a key`,`Append joins columns, while Merge stacks rows`,`They are two names for the same operation`,`Append only works on text columns, Merge only works on numeric columns`]},
+{topic:"Power BI", text:`What is the purpose of the Applied Steps pane in Power Query?`,
+ options:[`It records every transformation in order, and lets a trainee review, reorder, edit, or delete individual steps`,`It shows the final report visuals`,`It lists all the tables in the data model`,`It stores DAX measures separately from the query`]},
+{topic:"Power BI", text:`A trainee changes a column's data type from Text to Whole Number, but some cells in that column contain letters. What happens to those specific cells after the change is applied?`,
+ options:[`They display an Error value in that column, while the rest of the column converts normally`,`The entire query fails to load`,`Excel automatically deletes those rows`,`The letters are silently converted to zero`]},
+{topic:"Power BI", text:`Which Power Query feature lets a trainee break a single column, such as a full name, into multiple columns based on a delimiter like a space or comma?`,
+ options:[`Split Column`,`Merge Columns`,`Pivot Column`,`Fill Down`]},
+{topic:"Power BI", text:`In a typical star schema, which kind of table usually holds descriptive attributes, such as customer name and region, rather than numeric transaction amounts?`,
+ options:[`A dimension table`,`A fact table`,`A staging table`,`A measures table`]},
+{topic:"Power BI", text:`A one to many relationship is set between a Date table and a Sales table. What does this relationship mean in practice?`,
+ options:[`One row in the Date table can relate to many rows in the Sales table`,`One row in the Sales table can relate to many rows in the Date table`,`Each table can only contain one row per date`,`The two tables cannot be filtered together`]},
+{topic:"Power BI", text:`Two relationships exist between the same pair of tables, but only one drives filtering by default. How does Power BI indicate which one is currently active?`,
+ options:[`The active relationship is shown as a solid line, while the inactive one is shown as a dashed line`,`The active relationship is always the most recently created one`,`Power BI activates both relationships simultaneously`,`There is no visual indicator, it must be checked in DAX`]},
+{topic:"Power BI", text:`Enabling bidirectional cross filtering between two tables can sometimes introduce which problem?`,
+ options:[`Ambiguous filter paths or circular dependencies that produce unexpected results`,`Automatically faster report performance in every case`,`Permanent loss of the original data source`,`Conversion of all measures into calculated columns`]},
+{topic:"Power BI", text:`Why do experienced Power BI users generally build a dedicated Date table instead of relying only on the automatic date hierarchy?`,
+ options:[`It gives more control over fiscal periods, holidays, and consistent time intelligence calculations`,`It is the only way to add a chart to a report`,`It removes the need for any relationships in the model`,`It automatically improves DAX syntax highlighting`]},
+{topic:"Power BI", chart:LINE_CHART, text:`The line chart shows monthly revenue across a full year. Which insight is most directly supported by what the chart shows?`,
+ options:[`Revenue peaks in November and December, suggesting a seasonal pattern in demand`,`Revenue is highest in the first quarter of the year`,`Revenue stayed flat throughout the entire year`,`Revenue steadily declined every single month`]},
+{topic:"Power BI", text:`Which visual type is generally best suited to reveal the relationship or correlation between two continuous numeric variables, such as marketing spend and units sold?`,
+ options:[`Scatter chart`,`Pie chart`,`Card visual`,`Treemap`]},
+{topic:"Power BI", text:`What is the primary role of a slicer in a Power BI report?`,
+ options:[`It lets report users interactively filter the visuals on the page based on a chosen field`,`It permanently deletes filtered rows from the underlying data model`,`It replaces the need for relationships between tables`,`It converts a table visual into a chart`]},
+{topic:"Power BI", text:`A report page combines a KPI card, a trend line, and a breakdown by region. Why does this combination generally tell a more complete data story than a single chart alone?`,
+ options:[`Together they answer what happened, when it happened, and where it happened, rather than just one of those`,`It reduces the total number of visuals needed on other pages`,`It automatically removes the need for any written commentary`,`It guarantees the report will load faster`]},
+
+// ---------------- SQL (14) ----------------
+{topic:"SQL", text:`A trainee runs: SELECT customer_name, total_spent FROM customers WHERE total_spent > 50000; What effect does running this statement have on the underlying data?`,
+ options:[`None, it only displays matching rows without changing anything in the table`,`It permanently deletes customers below the threshold`,`It updates total_spent for all matching rows`,`It creates a new table named customers`]},
+{topic:"SQL", text:`After running: INSERT INTO orders (order_id, customer_id, amount) VALUES (105, 22, 15000); how does the orders table change compared to before?`,
+ options:[`It gains exactly one additional row`,`It gains one additional column`,`All existing rows are overwritten`,`The table structure is redefined`]},
+{topic:"SQL", text:`Given: UPDATE employees SET salary = salary * 1.1 WHERE department = 'Sales'; what happens to employees outside the Sales department?`,
+ options:[`Their salary values remain completely unchanged`,`Their salaries also increase by 10 percent`,`Their rows are removed from the table`,`Their department value is reset to NULL`]},
+{topic:"SQL", text:`A junior analyst runs: DELETE FROM orders WHERE order_date < '2023-01-01'; What remains true about the orders table immediately afterward?`,
+ options:[`The table structure and the remaining rows from 2023 onward still exist`,`The entire orders table no longer exists`,`All rows are removed regardless of date`,`The order_date column is deleted from the table`]},
+{topic:"SQL", text:`Which statement correctly defines a new table with order_id as a whole number and order_date as a date type?`,
+ options:[`CREATE TABLE orders (order_id INT, order_date DATE);`,`INSERT TABLE orders (order_id INT, order_date DATE);`,`UPDATE TABLE orders SET order_id INT, order_date DATE;`,`SELECT TABLE orders (order_id INT, order_date DATE);`]},
+{topic:"SQL", text:`What is the main risk of running DROP TABLE orders; compared to DELETE FROM orders;?`,
+ options:[`DROP removes the entire table structure, so the table cannot be recovered simply by inserting rows back into it`,`DROP only removes rows added in the last 24 hours`,`DROP is reversible with a single UNDO command in SQL`,`DROP and DELETE always produce identical results`]},
+{topic:"SQL", text:`Tables Customers and Orders are joined with INNER JOIN on customer_id. Which rows appear in the result?`,
+ options:[`Only customers that have at least one matching row in Orders`,`Every customer, whether or not they have any orders`,`Every order, whether or not it has a matching customer`,`Only customers with no orders at all`]},
+{topic:"SQL", text:`Using LEFT JOIN Customers to Orders, a customer with no matching orders still appears in the result. What value appears in the order related columns for that row?`,
+ options:[`NULL`,`Zero`,`The word "None" as text`,`The row is silently dropped instead`]},
+{topic:"SQL", text:`A RIGHT JOIN between Table A and Table B keeps all rows from which table, regardless of whether a match exists?`,
+ options:[`Table B, the table named on the right side of the JOIN`,`Table A, the table named on the left side of the JOIN`,`Whichever table has fewer rows`,`Neither table, only matching rows are kept`]},
+{topic:"SQL", text:`Which join type returns all rows from both tables involved, filling in NULLs on whichever side has no matching row?`,
+ options:[`FULL OUTER JOIN`,`INNER JOIN`,`CROSS JOIN`,`NATURAL JOIN, which is identical to INNER JOIN in every database`]},
+{topic:"SQL", text:`An Employees table has a manager_id column that references employee_id within that same table. Which technique lets a trainee list each employee alongside their manager's name?`,
+ options:[`A self join, joining the Employees table to itself`,`A RIGHT JOIN to a separate Managers table`,`A UNION of two unrelated tables`,`Grouping by manager_id without any join`]},
+{topic:"SQL", text:`Two tables are joined ON a.customer_id = b.cust_id, but one column stores IDs as text while the other stores them as numbers. What is the most likely outcome?`,
+ options:[`The join may return zero rows or incorrect matches because of the data type mismatch`,`The join automatically converts both columns and always matches correctly`,`The database refuses to run any query involving those tables ever again`,`The mismatch has no effect on the join results`]},
+{topic:"SQL", text:`To combine Orders, Customers, and Products into one result showing customer name, order date, and product name, what is the minimum number of JOIN clauses typically needed?`,
+ options:[`Two`,`One`,`Three`,`Zero, since three tables can be selected directly without any join`]},
+{topic:"SQL", text:`What happens if a JOIN between two tables is written without an ON clause specifying how the tables relate?`,
+ options:[`Every row in the first table is paired with every row in the second table, producing a Cartesian product`,`The query automatically fails to run in every database`,`Only the first matching row from each table is returned`,`The join silently behaves like a LEFT JOIN instead`]}
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+var state = {
+  name:"", email:"",
+  order:[],              // shuffled array of indices into QUESTIONS
+  optionOrder:{},        // qIndex -> shuffled array of original option indices
+  answers:{},            // qIndex -> selected original option index
+  currentPos:0,
+  remainingSeconds: CONFIG.durationMinutes*60,
+  timerHandle:null,
+  violations:[],
+  examActive:false,
+  submitted:false,
+  screenStream:null,
+  startTime:null
+};
+
+/* =========================================================
+   HELPERS
+========================================================= */
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+function fmtTime(sec){
+  var m = Math.floor(sec/60), s = sec%60;
+  return (m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+}
+function $(id){ return document.getElementById(id); }
+
+function logViolation(reason){
+  if(state.submitted) return;
+  state.violations.push({reason:reason, time:new Date().toISOString()});
+  var badge = $("violationBadge");
+  badge.classList.remove("hidden");
+  badge.textContent = state.violations.length + " violation" + (state.violations.length===1?"":"s");
+  showToast("Violation recorded: " + reason);
+  if(state.violations.length >= CONFIG.maxViolationsBeforeAutoSubmit){
+    submitExam("terminated_for_violations");
+  }
+}
+
+function showToast(msg){
+  var t = document.createElement("div");
+  t.className = "toast";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 4000);
+}
+
+/* =========================================================
+   SCREEN 1: REGISTRATION
+========================================================= */
+function checkRegistrationReady(){
+  var name = $("studentName").value.trim();
+  var email = $("studentEmail").value.trim();
+  var agree = $("agreeCheck").checked;
+  $("proceedBtn").disabled = !(name.length>1 && email.indexOf("@")>0 && agree);
+}
+["studentName","studentEmail"].forEach(function(id){
+  $(id).addEventListener("input", checkRegistrationReady);
+});
+$("agreeCheck").addEventListener("change", checkRegistrationReady);
+
+$("proceedBtn").addEventListener("click", function(){
+  state.name = $("studentName").value.trim();
+  state.email = $("studentEmail").value.trim();
+  $("instructionsScreen").classList.add("hidden");
+  $("setupScreen").classList.remove("hidden");
+});
+
+/* =========================================================
+   SCREEN 2: SCREEN SHARE + FULLSCREEN
+========================================================= */
+$("startExamBtn").addEventListener("click", function(){
+  $("setupError").classList.add("hidden");
+  navigator.mediaDevices.getDisplayMedia({video:true}).then(function(stream){
+    state.screenStream = stream;
+    var track = stream.getVideoTracks()[0];
+    track.onended = function(){ logViolation("Screen sharing was stopped"); };
+    return document.documentElement.requestFullscreen ? document.documentElement.requestFullscreen() : Promise.resolve();
+  }).then(function(){
+    beginExam();
+  }).catch(function(err){
+    $("setupError").textContent = "Screen sharing is required to begin. Please click the button again and allow the prompt.";
+    $("setupError").classList.remove("hidden");
+  });
+});
+
+/* =========================================================
+   BEGIN EXAM
+========================================================= */
+function beginExam(){
+  state.order = shuffle(QUESTIONS.map(function(_,i){return i;}));
+  state.order.forEach(function(qi){
+    var opts = QUESTIONS[qi].options.map(function(_,i){return i;});
+    state.optionOrder[qi] = shuffle(opts);
+  });
+  state.startTime = new Date();
+  state.examActive = true;
+
+  $("setupScreen").classList.add("hidden");
+  $("examScreen").classList.remove("hidden");
+  document.body.classList.add("exam-active");
+  $("headerCandidate").textContent = state.name;
+
+  buildPalette();
+  renderQuestion();
+  startTimer();
+  attachAntiCheat();
+}
+
+/* =========================================================
+   RENDERING
+========================================================= */
+function renderQuestion(){
+  var qi = state.order[state.currentPos];
+  var q = QUESTIONS[qi];
+  $("progressLine").textContent = "Question " + (state.currentPos+1) + " of " + state.order.length;
+  $("topicTag").textContent = q.topic;
+  $("qtext").textContent = q.text;
+
+  var chartWrap = $("chartWrap");
+  if(q.chart){
+    chartWrap.innerHTML = q.chart;
+    chartWrap.classList.remove("hidden");
+  } else {
+    chartWrap.innerHTML = "";
+    chartWrap.classList.add("hidden");
+  }
+
+  var wrap = $("optionsWrap");
+  wrap.innerHTML = "";
+  var order = state.optionOrder[qi];
+  var selected = state.answers[qi];
+  order.forEach(function(origIdx){
+    var div = document.createElement("label");
+    div.className = "option" + (selected===origIdx ? " selected":"");
+    var input = document.createElement("input");
+    input.type = "radio";
+    input.name = "opt";
+    input.checked = (selected===origIdx);
+    input.addEventListener("change", function(){
+      state.answers[qi] = origIdx;
+      renderQuestion();
+      updatePalette();
+    });
+    var span = document.createElement("span");
+    span.textContent = q.options[origIdx];
+    div.appendChild(input);
+    div.appendChild(span);
+    wrap.appendChild(div);
+  });
+
+  $("prevBtn").disabled = state.currentPos===0;
+  $("nextBtn").disabled = state.currentPos===state.order.length-1;
+  updatePalette();
+}
+
+function buildPalette(){
+  var pal = $("palette");
+  pal.innerHTML = "";
+  state.order.forEach(function(qi, pos){
+    var d = document.createElement("div");
+    d.className = "pdot";
+    d.textContent = pos+1;
+    d.addEventListener("click", function(){
+      state.currentPos = pos;
+      renderQuestion();
+    });
+    pal.appendChild(d);
+  });
+}
+function updatePalette(){
+  var dots = document.querySelectorAll("#palette .pdot");
+  dots.forEach(function(d, pos){
+    var qi = state.order[pos];
+    d.classList.toggle("answered", state.answers[qi]!==undefined);
+    d.classList.toggle("current", pos===state.currentPos);
+  });
+}
+
+$("prevBtn").addEventListener("click", function(){
+  if(state.currentPos>0){ state.currentPos--; renderQuestion(); }
+});
+$("nextBtn").addEventListener("click", function(){
+  if(state.currentPos<state.order.length-1){ state.currentPos++; renderQuestion(); }
+});
+$("submitBtn").addEventListener("click", confirmSubmit);
+$("submitBtn2").addEventListener("click", confirmSubmit);
+
+function confirmSubmit(){
+  var unanswered = state.order.filter(function(qi){ return state.answers[qi]===undefined; }).length;
+  var msg = unanswered>0
+    ? "You have " + unanswered + " unanswered question(s). Submit anyway?"
+    : "Submit your exam now? This cannot be undone.";
+  if(confirm(msg)){
+    submitExam("submitted_by_candidate");
+  }
+}
+
+/* =========================================================
+   TIMER
+========================================================= */
+function startTimer(){
+  updateTimerDisplay();
+  state.timerHandle = setInterval(function(){
+    state.remainingSeconds--;
+    updateTimerDisplay();
+    if(state.remainingSeconds<=0){
+      submitExam("time_expired");
+    }
+  }, 1000);
+}
+function updateTimerDisplay(){
+  var el = $("timerDisplay");
+  el.textContent = fmtTime(Math.max(0,state.remainingSeconds));
+  el.classList.toggle("low", state.remainingSeconds<=300);
+}
+
+/* =========================================================
+   ANTI-CHEAT
+========================================================= */
+function attachAntiCheat(){
+  document.addEventListener("contextmenu", function(e){
+    if(state.examActive) e.preventDefault();
+  });
+  ["copy","cut","paste"].forEach(function(evt){
+    document.addEventListener(evt, function(e){
+      if(state.examActive){
+        e.preventDefault();
+        logViolation("Attempted " + evt);
+      }
+    });
+  });
+  document.addEventListener("selectstart", function(e){
+    if(state.examActive) e.preventDefault();
+  });
+  document.addEventListener("keydown", function(e){
+    if(!state.examActive) return;
+    var k = e.key ? e.key.toLowerCase() : "";
+    var blockedCombo = (e.ctrlKey||e.metaKey) && ["c","v","x","u","s","p"].indexOf(k)>-1;
+    var devtoolsCombo = (e.key==="F12") || ((e.ctrlKey||e.metaKey)&&e.shiftKey&&["i","j","c"].indexOf(k)>-1);
+    if(blockedCombo || devtoolsCombo){
+      e.preventDefault();
+      logViolation("Restricted key combination used");
+    }
+  });
+  document.addEventListener("visibilitychange", function(){
+    if(state.examActive && document.hidden){
+      logViolation("Left the exam tab or window");
+    }
+  });
+  window.addEventListener("blur", function(){
+    if(state.examActive){
+      logViolation("Exam window lost focus");
+    }
+  });
+  document.addEventListener("fullscreenchange", function(){
+    if(state.examActive && !document.fullscreenElement && !state.submitted){
+      logViolation("Exited fullscreen");
+      $("fsModal").classList.remove("hidden");
+    }
+  });
+  $("resumeFsBtn").addEventListener("click", function(){
+    $("fsModal").classList.add("hidden");
+    if(document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  });
+  // Heuristic devtools detector, best effort only
+  setInterval(function(){
+    if(!state.examActive) return;
+    var widthGap = window.outerWidth - window.innerWidth;
+    var heightGap = window.outerHeight - window.innerHeight;
+    if(widthGap>160 || heightGap>160){
+      logViolation("Possible developer tools usage detected");
+    }
+  }, 3000);
+  window.addEventListener("beforeunload", function(e){
+    if(state.examActive && !state.submitted){
+      e.preventDefault();
+      e.returnValue = "";
+    }
+  });
+}
+
+/* =========================================================
+   SUBMISSION
+========================================================= */
+function submitExam(reason){
+  if(state.submitted) return;
+  state.submitted = true;
+  state.examActive = false;
+  document.body.classList.remove("exam-active");
+  if(state.timerHandle) clearInterval(state.timerHandle);
+  if(state.screenStream){
+    state.screenStream.getTracks().forEach(function(t){ t.stop(); });
+  }
+  if(document.fullscreenElement && document.exitFullscreen){
+    document.exitFullscreen().catch(function(){});
+  }
+
+  var correctCount = 0;
+  state.order.forEach(function(qi){
+    var correctOrigIdx = 0; // authored correct answer is always index 0 before shuffle
+    if(state.answers[qi]===correctOrigIdx) correctCount++;
+  });
+  var total = state.order.length;
+  var pct = Math.round((correctCount/total)*1000)/10;
+  var endTime = new Date();
+  var durationSeconds = Math.round((endTime - state.startTime)/1000);
+
+  var payload = {
+    name: state.name,
+    email: state.email,
+    score: correctCount,
+    total: total,
+    percentage: pct,
+    startTime: state.startTime.toISOString(),
+    endTime: endTime.toISOString(),
+    durationMinutes: Math.round(durationSeconds/60*10)/10,
+    violationCount: state.violations.length,
+    violations: state.violations,
+    status: reason
   };
 
-  const RAW_QUESTIONS = [
-    // --- A: Excel Interface (GUI) ---
-    ["A","Which part of the Excel window shows the address of the currently selected cell, like B4?",
-      ["Formula Bar","Name Box","Status Bar","Quick Access Toolbar"],1,
-      "The Name Box sits just left of the Formula Bar and always shows the active cell's address, or a named range."],
-    ["A","Which ribbon tab contains the 'Freeze Panes' command?",
-      ["Home","Insert","View","Data"],2,
-      "Freeze Panes lives on the View tab, alongside other screen arrangement tools like Split and New Window."],
-    ["A","You pasted a column of numbers from a website. They line up to the left instead of the right like normal numbers, and SUM() on that column returns 0. What is the most likely cause?",
-      ["The numbers are actually being stored as text","The column is too narrow to display the values","AutoCorrect has been switched off","The cells are formatted as currency"],0,
-      "Excel left-aligns text and right-aligns true numbers by default. Numbers pasted from the web often arrive as text, which is why SUM ignores them. Converting to Number, or using Text to Columns, fixes it."],
-    ["A","What is the main purpose of the Formula Bar?",
-      ["To display and edit the formula or content of the selected cell","To show the file name and author","To display cell formatting options","To navigate between worksheet tabs"],0,
-      "The Formula Bar shows the raw formula, not the calculated result, and is where you edit it directly."],
-    ["A","Your worksheet is set to print across 4 pages when it should fit neatly on one. Which view would you check first, before printing, to see and adjust the layout?",
-      ["Normal","Page Layout","Outline","Data"],1,
-      "Page Layout view shows margins, headers, and how content will actually sit on the page, so you can adjust scaling or orientation before printing."],
-    ["A","What is the Quick Access Toolbar used for?",
-      ["Giving one-click access to frequently used commands, no matter which ribbon tab is open","Storing custom formulas for reuse","Displaying only recently opened files","Formatting cell borders"],0,
-      "It sits above or below the ribbon and stays visible regardless of which tab you're on, which is handy for Save, Undo, and similar everyday commands."],
+  showResultScreen(payload);
+  sendResult(payload);
+}
 
-    // --- B: Text Functions ---
-    ["B",'=LEFT("Aidlearn",3) returns which result?',
-      ["Aid","Lea","arn","Aidl"],0,
-      'LEFT pulls characters from the start of the text. The first 3 characters of "Aidlearn" are "Aid".'],
-    ["B","A column has full names like 'Chidi Okafor' in one cell, but names are different lengths across the list. Which approach correctly extracts just the first name from any of them?",
-      ["=LEFT(A2,5) for every row","=LEFT(A2,FIND(\" \",A2)-1)","=MID(A2,1,5)","=RIGHT(A2,5)"],1,
-      "FIND locates the position of the space, so LEFT(A2, FIND(\" \",A2)-1) grabs everything before it, no matter how long the first name is. A fixed number like 5 breaks as soon as a name is shorter or longer."],
-    ["B","What does the TRIM function do?",
-      ["Removes all extra spaces except single spaces between words","Converts text to uppercase","Deletes a fixed number of characters from text","Removes numbers from a text string"],0,
-      "TRIM cleans up messy data by stripping leading, trailing, and repeated internal spaces, which is very useful on pasted or imported data."],
-    ["B",'=PROPER("data guru") returns which result?',
-      ["DATA GURU","Data Guru","data guru","Data guru"],1,
-      "PROPER capitalizes the first letter of every word, giving 'Data Guru'."],
-    ["B","A sales column was imported as text with numbers formatted like '1,200' (with a comma), so SUM returns 0. Which formula would correctly turn this into a usable number?",
-      ["=VALUE(SUBSTITUTE(A2,\",\",\"\"))","=TRIM(A2)","=PROPER(A2)","=LEN(A2)"],0,
-      "SUBSTITUTE removes the comma from the text, and VALUE then converts the cleaned text into a real number Excel can calculate with."],
-    ["B","Which function would you use to replace every '-' with '/' inside a text string, like turning 12-05-2026 into 12/05/2026?",
-      ["REPLACE","SUBSTITUTE","FIND","TEXT"],1,
-      "SUBSTITUTE swaps out specific characters or text anywhere they appear, which is exactly this kind of find and replace task."],
-
-    // --- C: Logical Functions ---
-    ["C",'=IF(B2>=50,"Pass","Fail") is applied where B2 is 45. What is the result?',
-      ["Pass","Fail","TRUE","#VALUE!"],1,
-      "45 is not greater than or equal to 50, so the condition is FALSE, and IF returns its second argument, \"Fail\"."],
-    ["C","=AND(TRUE,FALSE) returns which result?",
-      ["TRUE","FALSE","1","#VALUE!"],1,
-      "AND only returns TRUE when every argument is TRUE. One FALSE is enough to make the whole thing FALSE."],
-    ["C","=OR(10>20, 5<8) returns which result?",
-      ["TRUE","FALSE","#VALUE!","0"],0,
-      "OR returns TRUE if at least one condition is TRUE. 10>20 is FALSE, but 5<8 is TRUE, so the overall result is TRUE."],
-    ["C",'=IF(A2>80,"A",IF(A2>70,"B",IF(A2>60,"C","F"))) is applied where A2 is 75. What grade does it return, and why?',
-      ["A, because 75 rounds up","B, because Excel checks each condition in order and stops at the first one that is TRUE","C, because 75 is closer to 70 than to 80","F, because 75 does not exactly match any threshold"],1,
-      "Nested IFs are evaluated top to bottom. 75 is not greater than 80, so Excel checks the next condition: 75 is greater than 70, which is TRUE, so it returns \"B\" immediately without checking further."],
-    ["C","A colleague wraps every VLOOKUP in =IFERROR(VLOOKUP(...), \"\") so the sheet never shows an error. What is the hidden risk of doing this everywhere?",
-      ["A genuine typo in the lookup value now looks identical to a normal, expected not-found result, which can hide real mistakes","IFERROR only works when paired with VLOOKUP","It permanently disables VLOOKUP in that workbook","It converts every error into the number 0"],0,
-      "IFERROR is useful, but blanking out every error also blanks out the difference between 'this value legitimately does not exist' and 'someone mistyped the lookup value.' Both now look the same, blank, so real problems can slip through unnoticed."],
-    ["C","=NOT(5>10) returns which result?",
-      ["TRUE","FALSE","#VALUE!","5"],0,
-      "5>10 is FALSE, and NOT() flips a logical value, so NOT(FALSE) is TRUE."],
-
-    // --- D: Date Functions ---
-    ["D","Which function returns today's date and updates automatically every day the file is opened?",
-      ["DATE()","TODAY()","NOW()","DATEVALUE()"],1,
-      "TODAY() always returns the current date with no arguments, refreshing whenever the workbook recalculates."],
-    ["D","What is the real difference between TODAY() and NOW()?",
-      ["TODAY() returns only the date, NOW() returns the date and time","There is no difference between them","NOW() returns only the time, never the date","TODAY() includes time, NOW() doesn't"],0,
-      "TODAY() gives a date-only value, while NOW() gives a date and time value, useful for timestamps."],
-    ["D","You want a formula that calculates someone's exact completed age in years, from their birth date in B2, correctly even before their birthday this year. Which formula does this properly?",
-      ["=DATEDIF(B2,TODAY(),\"Y\")","=YEAR(TODAY())-YEAR(B2)","=TODAY()-B2","=DATEDIF(TODAY(),B2,\"Y\")"],0,
-      "DATEDIF handles the full date, not just the year, so it correctly returns one year less if the birthday has not happened yet this year. Subtracting YEAR values alone can overstate someone's age by a year."],
-    ["D",'=MONTH("15-Mar-2026") returns which result?',
-      ["15","3","2026","03/15"],1,
-      "MONTH() extracts just the month number from a date, so 15-Mar-2026 returns 3."],
-    ["D","Invoices are due on the last day of the month following the invoice date in A2. Which formula correctly calculates that due date?",
-      ["=EOMONTH(A2,1)","=EDATE(A2,1)","=MONTH(A2)+1","=A2+30"],0,
-      "EOMONTH(start_date, months) jumps forward the given number of months and then returns the last day of that month, which is exactly what a month-end due date needs. EDATE would return the same day of the month instead, not the month's end."],
-    ["D","Which function calculates the number of working days between two dates, excluding weekends (and optionally holidays)?",
-      ["WORKDAY","NETWORKDAYS","DAYS","DATEDIF"],1,
-      "NETWORKDAYS counts business days between two dates. Its counterpart WORKDAY does the reverse, finding a date a number of workdays away."],
-
-    // --- E: Lookup Functions ---
-    ["E","In =VLOOKUP(A2, D:F, 3, FALSE), what does the '3' represent?",
-      ["The row number to search","The column number within the range to return a value from","The number of matches to return","The worksheet number"],1,
-      "Counting D as column 1, E as column 2, F as column 3, VLOOKUP returns the value from that 3rd column."],
-    ["E","A VLOOKUP formula that worked fine last week now returns wrong results, right after a new column was inserted into the lookup table. What is the most likely cause, and what would prevent this in the future?",
-      ["The column index number no longer matches the new layout, and switching to INDEX/MATCH or XLOOKUP avoids this because they reference columns directly instead of counting position","The workbook file has become corrupted","Excel will automatically correct this the next time the file is opened","The new column deleted the original lookup values"],0,
-      "VLOOKUP's column number is a fixed count that does not adjust when columns are inserted or removed. INDEX/MATCH and XLOOKUP reference the return column directly, so they keep working even when the table structure changes."],
-    ["E","Why do many analysts prefer INDEX/MATCH over a plain VLOOKUP?",
-      ["It's more flexible, since it can look in either direction and doesn't break when columns are inserted","It requires fewer keystrokes to type","It only works on a single column of data","It automatically sorts the source data"],0,
-      "INDEX/MATCH separates 'where to look' from 'what to return,' making it more resilient to structural changes in the data than VLOOKUP."],
-    ["E","A report has monthly totals listed as column headers across the top row, Jan, Feb, Mar, and so on, with product names going down the side. Which lookup function is built to search across that top row?",
-      ["VLOOKUP","HLOOKUP","LEFT","DATEDIF"],1,
-      "HLOOKUP searches across the top row of a range and returns a value from a specified row below it, the horizontal counterpart to VLOOKUP."],
-
-    // --- F: AI Tools ---
-    ["F","In Excel, what is Microsoft Copilot best used for?",
-      ["Generating formula suggestions, summarizing trends, and creating quick visuals from natural language prompts","Replacing the need to ever learn Excel formulas","Automatically fixing every workbook error with no review needed","Only changing cell fill colors"],0,
-      "Copilot works alongside your own understanding of the data. It drafts formulas, summaries, and charts from plain language, but the results should still be reviewed."],
-    ["F","You ask an AI tool like Claude to build a complex nested formula for your dataset, and it hands back something that looks correct. What should you do next?",
-      ["Apply it immediately, since AI-generated formulas are rarely wrong","Test it against a few rows where you already know the right answer, before trusting it on the full dataset","Ignore it, since AI cannot meaningfully help with Excel formulas","Only use it if it produces no formula at all"],1,
-      "AI tools are strongest when you give them clear context, but their output should always be checked against known, correct values in your actual data before it's applied more broadly."]
-  ];
-
-  const questions = RAW_QUESTIONS.map((q) => ({
-    topic: q[0], text: q[1], options: q[2].slice(), correct: q[3], explain: q[4]
-  }));
-
-  // assign spreadsheet-style refs: column = topic letter, row = position within that topic
-  const topicCounters = {};
-  questions.forEach(q => {
-    topicCounters[q.topic] = (topicCounters[q.topic] || 0) + 1;
-    q.ref = q.topic + topicCounters[q.topic];
+function sendResult(payload){
+  var notice = $("submitStatusNotice");
+  if(!CONFIG.webhookUrl || CONFIG.webhookUrl.indexOf("PASTE_YOUR")===0){
+    notice.className = "notice notice-amber";
+    notice.textContent = "Automatic sending is not configured yet. Use the download button below to save a receipt and send it to your instructor.";
+    return;
+  }
+  fetch(CONFIG.webhookUrl, {
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"text/plain"},
+    body: JSON.stringify(payload)
+  }).then(function(){
+    notice.className = "notice notice-green";
+    notice.textContent = "Result sent to your instructor.";
+  }).catch(function(){
+    notice.className = "notice notice-red";
+    notice.textContent = "Automatic sending failed. Please use the download button below and send the receipt to your instructor.";
   });
+}
 
-  function shuffle(arr){
-    for (let i = arr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
+function showResultScreen(payload){
+  $("examScreen").classList.add("hidden");
+  $("resultScreen").classList.remove("hidden");
+  $("resultScoreText").textContent = CONFIG.showScoreToCandidate ? (payload.score + " / " + payload.total) : "Submitted";
+  $("resSummaryName").textContent = payload.name;
+  $("resSummaryPct").textContent = CONFIG.showScoreToCandidate ? (payload.percentage + "%") : "Hidden";
+  $("resSummaryTime").textContent = payload.durationMinutes + " minutes";
+  $("resSummaryViol").textContent = payload.violationCount;
+  $("resSummaryStatus").textContent = payload.status.replace(/_/g," ");
 
-  // randomize option order per question, per student, at load time
-  questions.forEach(q => {
-    const withFlag = q.options.map((opt, i) => ({ opt, isCorrect: i === q.correct }));
-    shuffle(withFlag);
-    q.options = withFlag.map(o => o.opt);
-    q.correct = withFlag.findIndex(o => o.isCorrect);
-  });
-
-  // ---------- STATE ----------
-  const TOTAL_SECONDS = 25 * 60;
-  const STORAGE_KEY = "aiacademy_excel_quiz_v1";
-  let current = 0;
-  let timeLeft = TOTAL_SECONDS;
-  let timerInterval = null;
-  let answers = new Array(questions.length).fill(null);
-  let infractionCount = 0;
-  const MAX_INFRACTIONS = 2;
-  let quizStarted = false;
-  let quizFinished = false;
-  let studentName = "";
-  let studentEmail = "";
-
-  // ---------- ONE ATTEMPT CHECK ----------
-  (function checkLock(){
-    const prev = localStorage.getItem(STORAGE_KEY);
-    if (prev){
-      try{
-        const data = JSON.parse(prev);
-        document.getElementById('lockedScoreLine').textContent =
-          "Previous result: " + data.score + "/" + data.total + " (" + data.pct + "%), submitted " + data.when + ".";
-      }catch(e){}
-      document.getElementById('startScreen').classList.add('hidden');
-      document.getElementById('lockedScreen').classList.remove('hidden');
-    }
-  })();
-
-  // ---------- START ----------
-  function startQuiz(){
-    const nameVal = document.getElementById('studentName').value.trim();
-    if (!nameVal){
-      showToast("Please enter your name before starting.");
-      return;
-    }
-    studentName = nameVal;
-    studentEmail = document.getElementById('studentEmail').value.trim();
-
-    document.getElementById('startScreen').classList.add('hidden');
-    document.getElementById('quizScreen').classList.remove('hidden');
-    quizStarted = true;
-
-    const el = document.documentElement;
-    if (el.requestFullscreen) { el.requestFullscreen().catch(()=>{}); }
-
-    attachAntiCheat();
-    startTimer();
-    renderQuestion();
-  }
-
-  // ---------- TIMER ----------
-  function startTimer(){
-    updateTimerDisplay();
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      updateTimerDisplay();
-      if (timeLeft <= 0){
-        clearInterval(timerInterval);
-        finishQuiz("Time is up. Your quiz was submitted automatically.");
-      }
-    }, 1000);
-  }
-  function updateTimerDisplay(){
-    const m = Math.floor(timeLeft/60).toString().padStart(2,'0');
-    const s = (timeLeft%60).toString().padStart(2,'0');
-    const disp = document.getElementById('timerDisplay');
-    disp.textContent = m + ":" + s;
-    disp.classList.toggle('warn', timeLeft <= 120);
-  }
-
-  // ---------- ANTI-CHEAT ----------
-  function attachAntiCheat(){
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    window.addEventListener('blur', onBlur);
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    ['copy','cut','paste','contextmenu'].forEach(evt => {
-      document.addEventListener(evt, blockEvent);
-    });
-    document.addEventListener('keydown', blockShortcuts);
-  }
-  let lastBlurFlag = 0;
-  function onVisibilityChange(){
-    if (document.hidden) registerInfraction("You switched away from this tab.");
-  }
-  function onBlur(){
-    const now = Date.now();
-    if (now - lastBlurFlag < 800) return;
-    lastBlurFlag = now;
-    if (!document.hidden) registerInfraction("This window lost focus.");
-  }
-  function onFullscreenChange(){
-    if (!document.fullscreenElement && quizStarted && !quizFinished){
-      registerInfraction("You exited fullscreen mode.");
-    }
-  }
-  function registerInfraction(reason){
-    if (!quizStarted || quizFinished) return;
-    infractionCount++;
-    if (infractionCount > MAX_INFRACTIONS){
-      finishQuiz("Quiz auto-submitted due to repeated focus or tab-switch violations.");
-    } else {
-      showBanner(reason + " Warning " + infractionCount + "/" + MAX_INFRACTIONS + ". One more and the quiz auto-submits.");
-    }
-  }
-  function blockEvent(e){
-    if (quizStarted && !quizFinished){
-      e.preventDefault();
-      showToast("That action is disabled during the quiz.");
-    }
-  }
-  function blockShortcuts(e){
-    if (!quizStarted || quizFinished) return;
-    const k = e.key.toLowerCase();
-    if ((e.ctrlKey || e.metaKey) && ['c','v','x','p'].includes(k)){
-      e.preventDefault();
-      showToast("That shortcut is disabled during the quiz.");
-    }
-  }
-  function showBanner(msg){
-    const b = document.getElementById('banner');
-    b.textContent = msg;
-    b.classList.add('show');
-    setTimeout(() => b.classList.remove('show'), 4000);
-  }
-  function showToast(msg){
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => t.classList.remove('show'), 2200);
-  }
-
-  // ---------- QUESTION RENDERING ----------
-  function renderQuestion(){
-    const q = questions[current];
-    document.getElementById('cellRef').textContent = q.ref;
-    document.getElementById('topicLabel').textContent = TOPICS[q.topic];
-    document.getElementById('questionText').textContent = q.text;
-    document.getElementById('progressFill').style.width = Math.round((current/questions.length)*100) + "%";
-
-    const container = document.getElementById('optionsContainer');
-    container.innerHTML = '';
-    const letters = ['A','B','C','D'];
-    q.options.forEach((opt, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'option';
-      btn.innerHTML = '<span class="letter">' + letters[idx] + '</span><span>' + opt + '</span>';
-      btn.onclick = () => selectAnswer(idx);
-      container.appendChild(btn);
-    });
-
-    const fb = document.getElementById('feedbackBox');
-    fb.className = 'feedback';
-    fb.textContent = '';
-    document.getElementById('nextBtn').classList.remove('show');
-  }
-
-  function selectAnswer(idx){
-    const q = questions[current];
-    const isCorrect = idx === q.correct;
-    answers[current] = { chosen: idx, isCorrect };
-
-    const buttons = document.querySelectorAll('#optionsContainer .option');
-    buttons.forEach((b, i) => {
-      b.disabled = true;
-      if (i === q.correct) b.classList.add('correct');
-      if (i === idx && !isCorrect) b.classList.add('wrong');
-    });
-
-    const fb = document.getElementById('feedbackBox');
-    fb.className = 'feedback show ' + (isCorrect ? 'right' : 'wrong');
-    fb.innerHTML = (isCorrect ? 'Correct. ' : 'Not quite. ') + q.explain;
-
-    document.getElementById('nextBtn').classList.add('show');
-    document.getElementById('nextBtn').textContent = (current === questions.length - 1) ? "See results" : "Next question";
-  }
-
-  function nextQuestion(){
-    if (current < questions.length - 1){
-      current++;
-      renderQuestion();
-    } else {
-      finishQuiz();
-    }
-  }
-
-  // ---------- RESULTS ----------
-  function finishQuiz(note){
-    if (quizFinished) return;
-    quizFinished = true;
-    clearInterval(timerInterval);
-    document.removeEventListener('visibilitychange', onVisibilityChange);
-    window.removeEventListener('blur', onBlur);
-    if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
-
-    document.getElementById('quizScreen').classList.add('hidden');
-    document.getElementById('startScreen').classList.add('hidden');
-    document.getElementById('resultsScreen').classList.remove('hidden');
-
-    let score = 0;
-    const byTopic = {};
-    Object.keys(TOPICS).forEach(t => byTopic[t] = {correct:0, total:0});
-
-    questions.forEach((q, i) => {
-      byTopic[q.topic].total++;
-      if (answers[i] && answers[i].isCorrect){ score++; byTopic[q.topic].correct++; }
-    });
-
-    const pct = Math.round((score/questions.length)*100);
-    document.getElementById('scoreBig').textContent = score + "/" + questions.length;
-    document.getElementById('scoreSub').textContent = pct + "% overall, " + studentName;
-    document.getElementById('submitNote').textContent = note || "Nice work. Here is how it went.";
-
-    const bd = document.getElementById('topicBreakdown');
-    bd.innerHTML = '';
-    let topicSummaryLines = [];
-    Object.keys(TOPICS).forEach(t => {
-      const d = byTopic[t];
-      const p = d.total ? Math.round((d.correct/d.total)*100) : 0;
-      const row = document.createElement('div');
-      row.className = 'topic-row';
-      row.innerHTML = '<div class="name">' + TOPICS[t] + '</div>' +
-        '<div class="bar-track"><div class="bar-fill" style="width:' + p + '%"></div></div>' +
-        '<div class="score">' + d.correct + '/' + d.total + '</div>';
-      bd.appendChild(row);
-      topicSummaryLines.push(TOPICS[t] + ": " + d.correct + "/" + d.total);
-    });
-
-    const review = document.getElementById('reviewList');
-    review.innerHTML = '';
-    const letters = ['A','B','C','D'];
-    questions.forEach((q, i) => {
-      const a = answers[i];
-      const answered = a !== null;
-      const status = answered ? (a.isCorrect ? 'right' : 'wrong') : 'wrong';
-      const det = document.createElement('details');
-      det.className = 'review-item';
-      det.innerHTML =
-        '<summary><span class="ref">' + q.ref + '</span><span>' + q.text.slice(0,60) + (q.text.length>60?'...':'') + '</span>' +
-        '<span class="status ' + status + '">' + (answered ? (a.isCorrect ? 'Correct' : 'Incorrect') : 'Unanswered') + '</span></summary>' +
-        '<div class="detail-body">' +
-        '<div><b>Your answer:</b> ' + (answered ? letters[a.chosen] + ' - ' + q.options[a.chosen] : 'None (not reached)') + '</div>' +
-        '<div><b>Correct answer:</b> ' + letters[q.correct] + ' - ' + q.options[q.correct] + '</div>' +
-        '<div>' + q.explain + '</div>' +
-        '</div>';
-      review.appendChild(det);
-    });
-
-    // lock this device against retakes
-    const when = new Date().toLocaleString();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ score, total: questions.length, pct, when, name: studentName }));
-
-    sendResultToInstructor(score, questions.length, pct, byTopic, when);
-  }
-
-  function buildSummaryText(score, total, pct, byTopic, when){
-    let lines = [];
-    lines.push(COURSE_LABEL + " - Result");
-    lines.push("Student: " + studentName + (studentEmail ? " (" + studentEmail + ")" : ""));
-    lines.push("Score: " + score + "/" + total + " (" + pct + "%)");
-    lines.push("Submitted: " + when);
-    lines.push("");
-    lines.push("By topic:");
-    Object.keys(TOPICS).forEach(t => {
-      lines.push("- " + TOPICS[t] + ": " + byTopic[t].correct + "/" + byTopic[t].total);
-    });
-    return lines.join("\n");
-  }
-
-  function sendResultToInstructor(score, total, pct, byTopic, when){
-    const statusEl = document.getElementById('sendStatus');
-    if (!INSTRUCTOR_EMAIL || INSTRUCTOR_EMAIL.indexOf("example.com") !== -1){
-      statusEl.textContent = "Automatic submission is not configured yet. Please rely on the screenshot for this attempt.";
-      return;
-    }
-    const subject = encodeURIComponent(COURSE_LABEL + " result: " + studentName + " (" + score + "/" + total + ")");
-    const body = encodeURIComponent(buildSummaryText(score, total, pct, byTopic, when));
-    const mailtoLink = "mailto:" + INSTRUCTOR_EMAIL + "?subject=" + subject + "&body=" + body;
-
-    statusEl.textContent = "Opening your email app to send your result to your instructor. Please press send there, then take your screenshot.";
-    const a = document.createElement('a');
-    a.href = mailtoLink;
-    a.style.display = "none";
-    document.body.appendChild(a);
+  $("downloadReceiptBtn").addEventListener("click", function(){
+    var blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "exam-receipt-" + payload.name.replace(/\s+/g,"_") + ".json";
     a.click();
-    document.body.removeChild(a);
-  }
+    URL.revokeObjectURL(url);
+  });
+}
 
-  function copySummary(){
-    let score = 0;
-    const byTopic = {};
-    Object.keys(TOPICS).forEach(t => byTopic[t] = {correct:0, total:0});
-    questions.forEach((q, i) => {
-      byTopic[q.topic].total++;
-      if (answers[i] && answers[i].isCorrect){ score++; byTopic[q.topic].correct++; }
-    });
-    const pct = Math.round((score/questions.length)*100);
-    const text = buildSummaryText(score, questions.length, pct, byTopic, new Date().toLocaleString());
-    navigator.clipboard.writeText(text).then(() => {
-      showToast("Summary copied. You can paste it into an email or message.");
-    }).catch(() => {
-      showToast("Could not copy automatically. Please screenshot instead.");
-    });
-  }
+})();
 </script>
 </body>
 </html>
